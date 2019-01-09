@@ -1,0 +1,1735 @@
+<html>
+<head>
+    <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests"> 
+    <meta http-equiv="content-type" content="text/html; charset=UTF8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="icon" href="icon.png">
+    <title>Nebraska</title>
+    <script type="text/javascript" src="http://d3js.org/d3.v3.js"></script>
+  
+
+     
+
+<script src="https://d3js.org/d3-collection.v1.min.js"></script>
+<script src="https://d3js.org/d3-dispatch.v1.min.js"></script>
+<script src="https://d3js.org/d3-dsv.v1.min.js"></script>
+<script src="https://d3js.org/d3-request.v1.min.js"></script>
+<script src="https://d3js.org/d3-queue.v3.min.js"></script>
+<script src="http://labratrevenge.com/d3-tip/javascripts/d3.tip.v0.6.3.js"></script>
+
+
+<!-- Latest compiled and minified CSS -->
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+
+<!-- jQuery library -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+
+<!-- Latest compiled JavaScript -->
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    
+ 
+
+    
+    <script type="text/javascript"  src="base1.js"></script>
+    
+    <link href="http://fonts.googleapis.com/css?family=Montserrat" charset="utf-8" rel="stylesheet" type="text/css">
+
+
+<style>
+    body {
+        font-family: "Proxima Nova", Montserrat, sans-serif;
+        background: white;
+
+
+    }
+
+    .map, .mapdis, .mappoverty {
+       text-align: center;
+       overflow: hidden;
+         height:550;
+
+    }
+    svg {
+       margin:-90px 10%;
+       overflow: hidden;
+      z-index: -1;
+    }
+  
+
+    h1, h2, h3, h4, h5, h6 {
+        font-weight: 800;
+        font-family: 'Open Sans','Helvetica Neue',Helvetica,Arial,sans-serif;
+    
+    }
+
+    #nebraska{
+        font-family:  "Proxima Nova", Montserrat, sans-serif;
+        color: #005DAA;
+    }
+    #datasource{
+        text-align: right;
+        font-family: 'Open Sans','Helvetica Neue',Helvetica,Arial,sans-serif;
+        font-size:0.8em;
+        margin-bottom: 50px;
+
+    }
+    
+    #headline{
+        font-weight: 900;
+        font-size:55px;
+        line-height: 1.2;
+    }
+    .subheadline{
+        font-weight: 600;
+        font-size:20px;
+        line-height: 1.1;
+        margin: 10px 0;
+    }
+    #p1{
+        --x-height-multiplier: 0.375;
+        --baseline-multiplier: 0.17;
+        font-family: medium-content-serif-font,Georgia,Cambria,"Times New Roman",Times,serif;
+        letter-spacing: .01rem;
+        font-weight: 400;
+        font-style: normal;
+        font-size: 21px;
+        line-height: 1.58;
+        letter-spacing: -.003em;
+        margin-bottom: 5%;
+        margin-top: 3%;
+    }
+
+    .meta{
+        font-size: 1em;
+        font-weight: 300;
+        box-sizing: border-box;
+        font-family: Lora,'Times New Roman',serif;}
+
+    .tract {
+        stroke: #fff;
+        stroke-width: 0.01em;
+           
+        } 
+
+    .tract:hover {
+        stroke: black;
+        stroke-width: 0.1em;
+           
+        } 
+    .tractpoverty {
+        stroke: #fff;
+        stroke-width: 0.01em;
+           
+        } 
+    .tractpoverty:hover {
+        stroke: black;
+        stroke-width: 0.1em;
+           
+        } 
+        .zoomindetail,.zoomindetail1,.zoomindetail2,.zoomindetail3,.zoomindetail4{
+          font-weight: bold;
+          margin-top: 20%;
+          background: black;
+          color: white;
+          padding: 1%;
+          font-family: 'Open Sans','Helvetica Neue',Helvetica,Arial,sans-serif;
+
+        }
+
+        .zoomindetail-bi65,.zoomindetail1-bi65,.zoomindetail2-bi65,.zoomindetail3-bi65,.zoomindetail4-bi65{
+          font-weight: bold;
+          margin-top: 20%;
+          background: black;
+          color: white;
+          padding: 1%;
+          font-family: 'Open Sans','Helvetica Neue',Helvetica,Arial,sans-serif;
+
+        }
+        .zoomindetail-dis18,.zoomindetail1-dis18,.zoomindetail2-dis18,.zoomindetail3-dis18,.zoomindetail4-dis18{
+          font-weight: bold;
+          margin-top: 20%;
+          background: black;
+          color: white;
+          padding: 1%;
+          font-family: 'Open Sans','Helvetica Neue',Helvetica,Arial,sans-serif;
+
+        }
+        .zoomindetail-dis65,.zoomindetail1-dis65,.zoomindetail2-dis65,.zoomindetail3-dis65,.zoomindetail4-dis65{
+          font-weight: bold;
+          margin-top: 20%;
+          background: black;
+          color: white;
+          padding: 1%;
+          font-family: 'Open Sans','Helvetica Neue',Helvetica,Arial,sans-serif;
+
+        }
+        .zoomindetail-pov,.zoomindetail1-pov,.zoomindetail2-pov,.zoomindetail3-pov,.zoomindetail4-pov{
+          font-weight: bold;
+          margin-top: 20%;
+          background: black;
+          color: white;
+          padding: 1%;
+          font-family: 'Open Sans','Helvetica Neue',Helvetica,Arial,sans-serif;
+
+        }
+        .zoomindetail,.zoomindetail-bi65,.zoomindetail-dis18,.zoomindetail-dis65,.zoomindetail-pov{
+          visibility: hidden;
+        }
+    .d3-tip {
+      position: relative;
+        line-height: 1;
+        font-weight: bold;
+        padding: 1%;
+        background: rgba(0, 0, 0, 0.8);
+        color: #fff;
+        border-radius: 2%;
+         font-family: 'Open Sans','Helvetica Neue',Helvetica,Arial,sans-serif;
+    }
+    .footer {
+    
+    
+       width: 100%;
+       background-color: WhiteSmoke;
+       height: 50px;
+       color: black;
+       text-align: center;
+       font-family: 'Open Sans','Helvetica Neue',Helvetica,Arial,sans-serif;
+        font-size:1em;
+        padding: 20px;
+  }
+    .first-letter {
+      font-size: 35px;
+      line-height: 70px;
+    }
+ 
+
+    .mainmap,.bimap65,.disability18,.disability65,.povertymap{
+      margin:3%;
+      text-align: center;
+      overflow: hidden;
+    
+    } 
+     
+    
+
+    
+
+   
+.button1,.button3,.button5,.button7,.button9{
+  
+    margin-top: 150%;
+    color:white;
+    background-color:black; 
+     z-index: 1000;
+     
+   }
+
+.button2,.button4,.button6,.button8,.button10{
+  
+     
+    color:white;
+    background-color:black; 
+     z-index: 1000;
+   
+   }
+
+</style>
+</head>
+<body>
+
+<div class="container">
+<h1 id="Nebraska">Nebraska</h1>
+
+
+<div class="row" id="heading">
+        <div class="col-lg-2 col-md-2 mx-auto"></div>
+          <div class="col-lg-8 col-md-8 mx-auto">
+            <div class="heading">
+              <h1 id="headline">Where Do Poverty And Disability Go Hand In Hand?</h1>
+              <h3 class="subheadline">An interactive bivariate map of Nebraska's poverty and disability rate</h3>
+              <span class="meta">Posted by <a href="#"> Han Liu </a> on January, 2019</span>
+            </div>
+          </div>
+        <div class="col-lg-2 col-md-2 mx-auto"></div>
+</div>
+
+
+
+
+
+<div class="row" id="p1">
+    <div class="col-lg-2 col-md-2 mx-auto"></div>
+    <div class="col-lg-8 col-md-8 mx-auto">
+        <p><span class="first-letter">6O </span> percent of disabled working-age adults in the U.S. are jobless, according to Employment and Disability Institute at Cornell University, 2013. Disability and poverty create a vicious circle: People with disabilities are twice as likely to be jobless when compared with the entire population, while unemployment linked to reduced use of preventive healthcare, which increase the chances of becoming disabled. The purpose of this map is to show the spatial distribution of this vicious circle.</p>
+        </div>
+    <div class="col-lg-2 col-md-2 mx-auto"></div>
+  </div>
+
+
+
+
+
+
+
+<div class="mainmap">
+    <h4  >Poverty Rate vs. Disability Rate Among Working-age（18-64 years old)</h4>
+          <div class="col-lg-11 col-md-11 ">
+            <div class="map" ></div>
+          </div>
+
+
+          <div class="col-lg-1 col-md-1 ">
+             <button type="button" class="button1". onclick="zoomin()">+</button><br>
+
+             <button type="button" class="button2". onclick="zoomout()">−</button>
+            
+
+            <div class="zoomindetail">
+             <p class="zoomindetail1" style="font-size: 0.8em; color:red"> </p>
+             <p style="font-size: 0.8em; color:white"> Poverty: </p>
+             <p class="zoomindetail2" style="font-size: 1.2em; color:red" > </p>
+             <p style="font-size: 0.8em; color:white"> Disability: </p>
+             <p style="font-size: 0.8em; color:white"> (18-64) </p>
+             <p class="zoomindetail3" style="font-size: 1.2em; color:red"> </p>
+             
+           </div>
+
+          </div>
+            <div class="col-lg-12 col-md-12 ">
+              <div><p id="datasource"><strong>Data source:</strong>  U.S. Census Bureau, 2013-2017 American Community Survey 5-Year Estimates</p></div>
+            </div>
+</div>
+ 
+    
+    
+
+<div class="bimap65" style="text-align: center">
+
+  <h4  >Poverty Rate vs. Disability Rate Among Seniors (65 years older)</h4>
+
+          <div class="col-lg-11 col-md-11 "><div class="map65" ></div></div>
+          
+          <div class="col-lg-1 col-md-1 ">
+
+                 <button type="button" class="button9". onclick="zoominbi65()">+</button><br>
+
+                 <button type="button" class="button10". onclick="zoomoutbi65()">−</button>
+                
+
+                <div class="zoomindetail-bi65">
+                 <p class="zoomindetail1-bi65" style="font-size: 0.8em; color:red"> </p>
+                 <p style="font-size: 0.8em; color:white"> Poverty: </p>
+                 <p class="zoomindetail2-bi65" style="font-size: 1.2em; color:red" > </p>
+                 <p style="font-size: 0.8em; color:white"> Disability: </p>
+                 <p style="font-size: 0.8em; color:white"> (over 65) </p>
+                 <p class="zoomindetail3-bi65" style="font-size: 1.2em; color:red"> </p>
+               </div>    
+         </div>
+
+
+          <div class="col-lg-12 col-md-12 "> 
+              <div style="margin-top: 10%;"><p id="datasource"><strong>Data source:</strong>  U.S. Census Bureau, 2013-2017 American Community Survey 5-Year Estimates</p> </div>
+          </div>
+</div>
+
+
+
+<div class="row" id="p1">
+  <div class="col-lg-2 col-md-2 mx-auto"></div>
+    <div class="col-lg-8 col-md-8 mx-auto">
+    <p style="text-indent: 60px">The data used is retrieved from the U.S. Census Bureau, 2013-2017 American Community Survey 5-Year Estimates, which contains the total number of the population in age groups (under 5) ( 5-17) (18-34) (35-64) (65-74) (over 75) , and the number of population with at least one disability within each age group. To calculate the disability rate among the working-age population, two age groups (18-34) (35 - 64) was used. First, I summed the total number of population of each group, then summed the number of population with a disability of each group. The final disability rate is the number of total population divided by the number of population with a disability. I used the same process to calculate the disability rate for people over 65 years old.
+</p>
+    </div>
+    <div class="col-lg-2 col-md-2 mx-auto"></div>
+  </div>
+
+
+<div class="row" id="p1">
+    <div class="col-lg-2 col-md-2 mx-auto"></div>
+    <div class="col-lg-8 col-md-8 mx-auto">
+        <p style="text-indent: 60px">The disability rate map down below has two primary purposes: one is to spatial identify the disability percentage, the other is discern the correlation with poverty.  I choosed quantile classification method to break the data into equally filled groups of three due to the data distribution is not skewed toward one extreme. Also, quantile method yields a pretty high-contrast map, which makes the final bivariate map with 9 color scales easier to read. </p>
+        </div>
+    <div class="col-lg-2 col-md-2 mx-auto"></div>
+  </div>
+
+
+<div class="disability18" style="text-align: center">
+      <h4>Percentage Of Working-age（18-64 years old）Population With Disability</h4>
+      <div class="col-lg-11 col-md-11 "><div class="mapdis"></div></div>
+
+      <div class="col-lg-1 col-md-1 ">
+             <button type="button" class="button3". onclick="zoomindis18()">+</button><br>
+
+             <button type="button" class="button4". onclick="zoomoutdis18()">−</button>
+            
+
+            <div class="zoomindetail-dis18">
+             <p class="zoomindetail1-dis18" style="font-size: 0.8em; color:red"> </p>
+              
+             <p style="font-size: 0.8em; color:white"> Disability: </p>
+             <p style="font-size: 0.8em; color:white"> (18-64): </p>
+             <p class="zoomindetail3-dis18" style="font-size: 1.2em; color:red"> </p>
+              
+           </div>
+
+     </div>
+
+    <div class="col-lg-12 col-md-12 ">
+      <p id="datasource" ><strong>Data source:</strong>  U.S. Census Bureau, 2013-2017 American Community Survey 5-Year Estimates</p>
+    </div>
+
+</div>
+
+
+
+
+
+
+<div class="disability65" style="text-align: center">
+    <h4>Percentage Of Seniors (65 Years Older) Population With Disability</h4>
+      <div class="col-lg-11 col-md-11 "><div class="mapdis65"></div></div>
+
+      <div class="col-lg-1 col-md-1 ">
+             <button type="button" class="button5". onclick="zoomindis65()">+</button><br>
+
+             <button type="button" class="button6". onclick="zoomoutdis65()">−</button>
+            
+
+            <div class="zoomindetail-dis65">
+             <p class="zoomindetail1-dis65" style="font-size: 0.8em; color:red"> </p>
+              
+             <p style="font-size: 0.8em; color:white"> Disability: </p>
+             <p style="font-size: 0.8em; color:white"> (over 65))</p>
+             <p class="zoomindetail3-dis65" style="font-size: 1.2em; color:red"> </p>
+              
+           </div>
+
+     </div>
+
+
+      <div class="col-lg-12 col-md-12 ">
+        <div style="margin-top: 10%;"><p id="datasource"><strong>Data source:</strong>  U.S. Census Bureau, 2013-2017 American Community Survey 5-Year Estimates</p></div></div>
+</div>
+
+
+
+
+
+
+
+
+
+<div class="povertymap" style="text-align: center">
+  <h4>Percentage Of Population Below Poverty Level</h4>
+   <div class="col-lg-11 col-md-11 "><div class="mappoverty"></div></div>
+
+    <div class="col-lg-1 col-md-1 ">
+             <button type="button" class="button7". onclick="zoominpov()">+</button><br>
+
+             <button type="button" class="button8". onclick="zoomoutpov()">−</button>
+            
+
+            <div class="zoomindetail-pov">
+             <p class="zoomindetail1-pov" style="font-size: 0.8em; color:red"> </p>
+             <p style="font-size: 0.8em; color:white"> Poverty: </p>
+             <p class="zoomindetail2-pov" style="font-size: 1.2em; color:red" > </p>
+             
+           </div>
+
+     </div>
+
+    <div class="col-lg-12 col-md-12 " ><p id="datasource"><strong>Data source:</strong>  U.S. Census Bureau, 2013-2017 American Community Survey 5-Year Estimates</p></div>
+</div>
+
+
+
+
+<div class="row" id="p1">
+    <div class="col-lg-2 col-md-2 mx-auto"></div>
+    <div class="col-lg-8 col-md-8 mx-auto">
+        <p style="text-indent: 60px">I applied the same quantile method in the making of the poverty rate map above. As can be seen, the urban area has a higher poverty rate than the rural area. The highest poverty rate is 59.1 percent in Census Tract #5, Lancaster County. The mean poverty rate is 12.6 percent, and the median poverty rate is 9.9 percent, which means the data distribution has a positive skew. In other words, most census tracts have low poverty rate, but some census tract have very high poverty rate. Lastly, I combined those two univariate maps together to create the final bivariate map of poverty and disability. </p>
+        </div>
+    <div class="col-lg-2 col-md-2 mx-auto"></div>
+  </div>
+
+
+<div class="footer">
+  
+  <p> &copy; 2019 Han Liu | Design and Development. <strong>E-mail:</strong> han22liu@gmail.com</p>
+ 
+</div>
+
+  <script>
+
+   
+ 
+  
+ 
+
+
+
+
+
+
+//map view starts here
+    var width = $( ".map").width(),
+     height = 600,
+    centered;
+    
+//create svg tag in html
+    var svg = 
+        d3.select( ".map" )
+          .append( "svg" )
+          .attr( "width", width )
+          .attr( "height", height );
+
+
+
+
+
+    var projection = d3.geo.albers()
+        .center([0, 42])
+        .rotate([99,0])
+        .scale(8000)
+        .translate([width / 2, height / 2]);
+
+//Creates a new geographic path generator.
+//converts (longitude and latitude) to  (x and y in pixels)
+    var geoPath = d3.geo.path()
+        .projection(projection);
+        
+
+
+
+ //drag
+ 
+
+//create quantile classes with color scale
+        var color = d3.scale.quantile() //designate quantile scale generator
+        .domain([0,7.6,10.8,36])
+         .range(["#deebf7","#9ecae1","#3182bd"]);
+//create quantile classes with color scale
+        var color_poverty = d3.scale.quantile() //designate quantile scale generator
+        .domain([0,7.7,13,60])
+         .range(["#fee0d2","#fc9272","#de2d26"]);
+
+
+
+ 
+ //disability
+      svg.append("g")//g is a html tag, means group,makes SVG visualization more organized
+        .selectAll("path")//path is features (polygons), also a html tag
+        .data(counties.features)//data source
+        .enter()//creating one polygon for every data element in the array.
+        .append("path")//append all polygon to the svg tag in html
+        .attr( "d", geoPath )//The shape of a path element is defined by one attribute: d.
+        .attr("class","tract")//give path tag a class name to style
+     
+        .style("fill", function(d) {
+              return color(d.properties.dis); 
+                
+                })
+  
+             
+        
+        ;
+      
+    
+
+
+
+//poverty
+
+       svg.append("g")//g is a html tag, means group,makes SVG visualization more organized
+        .selectAll("path")//path is features (polygons), also a html tag
+        .data(counties.features)//data source
+        .enter()//creating one polygon for every data element in the array.
+        .append("path")//append all polygon to the svg tag in html
+        .attr( "d", geoPath )//The shape of a path element is defined by one attribute: d.
+        .attr("class","tractpoverty")//give path tag a class name to style
+
+        .on("mouseover", function(d){
+            //tip.show(d);
+            d3.select(".zoomindetail").style(
+              "visibility","visible"
+              );
+            d3.select(".zoomindetail1").text(
+              d.properties.placen 
+              );
+            d3.select(".zoomindetail2 ").text(
+               
+              d.properties.poverty+' %'
+              );
+            d3.select(".zoomindetail3 ").text(
+              
+              d.properties.dis +' %'
+              );
+             d3.select(".zoomindetail4 ").text(
+              
+              d.properties.uninsur +' %'
+              );
+
+        })
+ 
+
+        .style("fill",function(d) {
+              return color_poverty(d.properties.poverty); 
+
+                })
+        .style("opacity", 0.5)
+
+         
+           .on("click", clicked)
+     
+          ;
+
+
+
+
+
+
+ 
+
+
+function zoomin(d) {
+  var x, y, k;
+
+  if (d && centered !== d) {
+    var centroid = geoPath.centroid(d);
+    x = centroid[0];
+    y = centroid[1];
+    k = 6;
+    centered = d;
+  } else {
+    x = width / 1;
+    y = height /1;
+    k = 6;
+    centered = d;
+  }
+
+
+ svg.transition()
+      .duration(850)
+      .attr("transform", "scale(" + k + ")translate(" + -x/3 + "," + -y/9 + ")")
+     
+      ;
+ 
+}
+
+
+
+function clicked(d) {
+  var x, y, k;
+
+  if (d && centered !== d) {
+    var centroid = geoPath.centroid(d);
+    x = centroid[0];
+    y = centroid[1];
+    k = 4;
+    centered = d;
+  } else {
+    x = width / 1;
+    y = height /1;
+    k = 4;
+    centered = d;
+  }
+
+
+ svg.transition()
+      .duration(750)
+      .attr("transform", "scale(" + k + ")translate(" + -x/3 + "," + -y/9 + ")")
+       
+      ;
+ 
+}
+
+
+
+function zoomout(d) {
+ location.reload(); 
+}
+
+ 
+
+ 
+//Adding legend for dis
+
+
+var legend_labels = ["Low Disability"," ↓  ", "High Disability"] ;
+
+
+  var legend = svg.selectAll("g.legend")
+  .data([0,7.6,10.8])
+  .enter().append("g")
+  .attr("class", "legend");
+
+  var ls_w = 20, ls_h = 20;
+
+  legend.append("rect")
+  .attr("x", 0)
+  .attr("y", function(d, i){ return height - (i*ls_h) - 2*ls_h;})
+  .attr("width", ls_w*3)
+  .attr("height", ls_h)
+  .style("fill", function(d, i) { return color(d); })
+  
+
+  
+  ;
+
+
+  legend.append("text")
+  .attr("class","lengendtext")
+  .attr("x", 60)
+  .attr("y", function(d, i){ return height - (i*ls_h) - ls_h - 5;})
+  .text(function(d, i){ return legend_labels[i]; })
+  .style("font-size",10)
+;
+
+
+
+//Adding legend for poverty
+
+
+
+
+
+  var legend = svg.selectAll("g.legend1")
+  .data([0,7.7,13])
+  .enter().append("g")
+  .attr("class", "legendpoverty");
+ 
+
+  legend.append("rect")
+  .attr("x", 0)
+  .attr("y", function(d, i){ return height - (i*ls_h) - 2*ls_h;})
+  .attr("width", ls_w)
+  .attr("height", ls_h)
+  .style("fill", "#fee0d2")
+  .style("opacity", 0.5)
+  ;
+ 
+
+ 
+
+
+  var legend = svg.selectAll("g.legend2")
+  .data([0,7.7,13])
+  .enter().append("g")
+  .attr("class", "legend");
+
+   
+
+  legend.append("rect")
+  .attr("x", 20)
+  .attr("y", function(d, i){ return height - (i*ls_h) - 2*ls_h;})
+  .attr("width", ls_w)
+  .attr("height", ls_h)
+  .style("fill","#fc9272")
+  .style("opacity", 0.5);
+
+   var legend = svg.selectAll("g.legend3")
+  .data([0,7.7,13])
+  .enter().append("g")
+  .attr("class", "legend");
+
+   
+
+  legend.append("rect")
+  .attr("x", 40)
+  .attr("y", function(d, i){ return height - (i*ls_h) - 2*ls_h;})
+  .attr("width", ls_w)
+  .attr("height", ls_h)
+  .style("fill","#de2d26")
+  .style("opacity", 0.5)
+  ;
+
+
+var legend_labels1 = [" ","   ", " Low ←   High Poverty &"] ;
+
+
+  legend.append("text")
+  .attr("class","lengendtext1")
+  .attr("x", 10)
+  .attr("y", function(d, i){ return height - (i*ls_h) - ls_h - 25;})
+  .text(function(d, i){ return legend_labels1[i]; })
+  .style("font-size",10)
+    
+    
+;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+//map view starts here
+    var width65 = $( ".map").width(),
+     height65 = 600,
+    centered;
+    
+//create svg tag in html
+    var svg65 = 
+        d3.select( ".map65" )
+          .append( "svg" )
+          .attr( "width", width65 )
+          .attr( "height", height65 );
+
+
+
+
+
+    var projection65 = d3.geo.albers()
+        .center([0, 42])
+        .rotate([99,0])
+        .scale(8000)
+        .translate([width65 / 2, height65 / 2]);
+
+//Creates a new geographic path generator.
+//converts (longitude and latitude) to  (x and y in pixels)
+    var geoPath65 = d3.geo.path()
+        .projection(projection65);
+        
+
+
+
+ //drag
+ 
+
+//create quantile classes with color scale
+        var color65 = d3.scale.quantile() //designate quantile scale generator
+        .domain([0,29,38.8,72])
+         .range(["#deebf7","#9ecae1","#3182bd"]);
+//create quantile classes with color scale
+        var color_poverty65 = d3.scale.quantile() //designate quantile scale generator
+        .domain([0,7.7,13,60])
+         .range(["#fee0d2","#fc9272","#de2d26"]);
+
+
+
+ 
+ //disability
+      svg65.append("g")//g is a html tag, means group,makes SVG visualization more organized
+        .selectAll("path")//path is features (polygons), also a html tag
+        .data(counties.features)//data source
+        .enter()//creating one polygon for every data element in the array.
+        .append("path")//append all polygon to the svg tag in html
+        .attr( "d", geoPath65 )//The shape of a path element is defined by one attribute: d.
+        .attr("class","tract")//give path tag a class name to style
+     
+        .style("fill", function(d) {
+              return color65(d.properties.dis65); 
+                
+                })
+  
+             
+        
+        ;
+      
+    
+
+
+
+//poverty
+
+       svg65.append("g")//g is a html tag, means group,makes SVG visualization more organized
+        .selectAll("path")//path is features (polygons), also a html tag
+        .data(counties.features)//data source
+        .enter()//creating one polygon for every data element in the array.
+        .append("path")//append all polygon to the svg tag in html
+        .attr( "d", geoPath65 )//The shape of a path element is defined by one attribute: d.
+        .attr("class","tractpoverty")//give path tag a class name to style
+
+        .on("mouseover", function(d){
+            //tip.show(d);
+            d3.select(".zoomindetail-bi65").style(
+              "visibility","visible"
+              );
+            d3.select(".zoomindetail1-bi65").text(
+              d.properties.placen 
+              );
+            d3.select(".zoomindetail2-bi65 ").text(
+               
+              d.properties.poverty+' %'
+              );
+            d3.select(".zoomindetail3-bi65 ").text(
+              
+              d.properties.dis65 +' %'
+              );
+             d3.select(".zoomindetail4-bi65 ").text(
+              
+              d.properties.uninsur +' %'
+              );
+
+        })
+ 
+
+        .style("fill",function(d) {
+              return color_poverty(d.properties.poverty); 
+
+                })
+        .style("opacity", 0.5)
+
+         
+           .on("click", clickedbi65)
+     
+          ;
+
+
+
+
+
+
+ 
+
+
+function zoominbi65(d) {
+  var x, y, k;
+
+  if (d && centered !== d) {
+    var centroid = geoPath65.centroid(d);
+    x = centroid[0];
+    y = centroid[1];
+    k = 6;
+    centered = d;
+  } else {
+    x = width / 1;
+    y = height /1;
+    k = 6;
+    centered = d;
+  }
+
+
+ svg65.transition()
+      .duration(850)
+      .attr("transform", "scale(" + k + ")translate(" + -x/3 + "," + -y/9 + ")")
+     
+      ;
+ 
+}
+
+
+function clickedbi65(d) {
+  var x, y, k;
+
+  if (d && centered !== d) {
+    var centroid = geoPath65.centroid(d);
+    x = centroid[0];
+    y = centroid[1];
+    k = 4;
+    centered = d;
+  } else {
+    x = width / 1;
+    y = height /1;
+    k = 4;
+    centered = d;
+  }
+
+
+ svg65.transition()
+      .duration(750)
+      .attr("transform", "scale(" + k + ")translate(" + -x/3 + "," + -y/9 + ")")
+       
+      ;
+ 
+}
+
+
+
+
+
+function zoomoutbi65(d) {
+ location.reload(); 
+}
+
+ 
+
+ 
+//Adding legend for dis
+
+
+var legend_labels65 = ["Low Disability"," ↓  ", "High Disability"] ;
+
+
+  var legend65= svg65.selectAll("g.legend65")
+  .data([0,29,38.8])
+  .enter().append("g")
+  .attr("class", "legend65");
+
+  var ls_w65 = 20, ls_h65 = 20;
+
+  legend65.append("rect")
+  .attr("x", 0)
+  .attr("y", function(d, i){ return height - (i*ls_h) - 2*ls_h;})
+  .attr("width", ls_w*3)
+  .attr("height", ls_h)
+  .style("fill", function(d, i) { return color65(d); })
+  
+
+  
+  ;
+
+
+  legend65.append("text")
+  .attr("class","lengendtext65")
+  .attr("x", 60)
+  .attr("y", function(d, i){ return height - (i*ls_h) - ls_h - 5;})
+  .text(function(d, i){ return legend_labels65[i]; })
+  .style("font-size",10)
+;
+
+
+
+//Adding legend for poverty
+
+
+
+
+
+  var legend65 = svg65.selectAll("g.legend165")
+  .data([0,7.7,13])
+  .enter().append("g")
+  .attr("class", "legendpoverty65");
+ 
+
+  legend65.append("rect")
+  .attr("x", 0)
+  .attr("y", function(d, i){ return height - (i*ls_h) - 2*ls_h;})
+  .attr("width", ls_w)
+  .attr("height", ls_h)
+  .style("fill", "#fee0d2")
+  .style("opacity", 0.5)
+  ;
+ 
+
+ 
+
+
+  var legend65 = svg65.selectAll("g.legend265")
+  .data([0,7.7,13])
+  .enter().append("g")
+  .attr("class", "legend65");
+
+   
+
+  legend65.append("rect")
+  .attr("x", 20)
+  .attr("y", function(d, i){ return height - (i*ls_h) - 2*ls_h;})
+  .attr("width", ls_w)
+  .attr("height", ls_h)
+  .style("fill","#fc9272")
+  .style("opacity", 0.5);
+
+   var legend65 = svg65.selectAll("g.legend365")
+  .data([0,7.7,13])
+  .enter().append("g")
+  .attr("class", "legend65");
+
+   
+
+  legend65.append("rect")
+  .attr("x", 40)
+  .attr("y", function(d, i){ return height - (i*ls_h) - 2*ls_h;})
+  .attr("width", ls_w)
+  .attr("height", ls_h)
+  .style("fill","#de2d26")
+  .style("opacity", 0.5)
+  ;
+
+
+var legend_labels165 = [" ","   ", " Low ←   High Poverty &"] ;
+
+
+  legend65.append("text")
+  .attr("class","lengendtext165")
+  .attr("x", 10)
+  .attr("y", function(d, i){ return height - (i*ls_h) - ls_h - 25;})
+  .text(function(d, i){ return legend_labels165[i]; })
+  .style("font-size",10)
+    
+    
+;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+//uni dis 18
+
+
+//map view starts here
+    var width2 = $( ".mapdis").width(),
+     height2 = 600;
+    
+//create svg tag in html
+    var svg2 = 
+        d3.select( ".mapdis" )
+          .append( "svg" )
+          .attr( "width", width2 )
+          .attr( "height", height2 );
+
+
+
+
+
+    var projection2 = d3.geo.albers()
+        .center([0, 42])
+        .rotate([99,0])
+        .scale(8000)
+        .translate([width2 / 2, height2 / 2]);
+
+//Creates a new geographic path generator.
+//converts (longitude and latitude) to  (x and y in pixels)
+    var geoPath2 = d3.geo.path()
+        .projection(projection2);
+ 
+
+
+
+ 
+ //disability
+      svg2.append("g")//g is a html tag, means group,makes SVG visualization more organized
+        .selectAll("path")//path is features (polygons), also a html tag
+        .data(counties.features)//data source
+        .enter()//creating one polygon for every data element in the array.
+        .append("path")//append all polygon to the svg tag in html
+        .attr( "d", geoPath2 )//The shape of a path element is defined by one attribute: d.
+        .attr("class","tract")//give path tag a class name to style
+         
+        
+        .style("fill", function(d) {
+              return color(d.properties.dis); 
+                
+                })
+      
+        .on("mouseover", function(d){
+            //tip.show(d);
+            d3.select(".zoomindetail-dis18").style(
+              "visibility","visible"
+              );
+            d3.select(".zoomindetail1-dis18").text(
+              d.properties.placen 
+              );
+            d3.select(".zoomindetail2-dis18 ").text(
+               
+              d.properties.poverty+' %'
+              );
+            d3.select(".zoomindetail3-dis18 ").text(
+              
+              d.properties.dis +' %'
+              );
+             d3.select(".zoomindetail4-dis18 ").text(
+              
+              d.properties.uninsur +' %'
+              );
+
+        })
+       
+           .on("click", clickeddis18)
+     
+          
+
+        ;
+      
+  
+
+ 
+
+
+
+function zoomindis18(d) {
+  var x, y, k;
+
+  if (d && centered !== d) {
+    var centroid = geoPath2.centroid(d);
+    x = centroid[0];
+    y = centroid[1];
+    k = 6;
+    centered = d;
+  } else {
+    x = width / 1;
+    y = height /1;
+    k = 6;
+    centered = d;
+  }
+
+
+ svg2.transition()
+      .duration(750)
+      .attr("transform", "scale(" + k + ")translate(" + -x/3 + "," + -y/9 + ")")
+     
+      ;
+ 
+}
+
+
+function clickeddis18(d) {
+  var x, y, k;
+
+  if (d && centered !== d) {
+    var centroid = geoPath2.centroid(d);
+    x = centroid[0];
+    y = centroid[1];
+    k = 4;
+    centered = d;
+  } else {
+    x = width / 1;
+    y = height /1;
+    k = 4;
+    centered = d;
+  }
+
+
+ svg2.transition()
+      .duration(750)
+      .attr("transform", "scale(" + k + ")translate(" + -x/3 + "," + -y/9 + ")")
+       
+      ;
+ 
+}
+
+
+function zoomoutdis18(d) {
+ location.reload(); 
+}
+
+ 
+//Adding legend for dis
+
+
+        //create quantile classes with color scale
+        var color2 = d3.scale.quantile() //designate quantile scale generator
+        .domain([0,7.6,10.8,36])
+         .range(["#deebf7","#9ecae1","#3182bd"]);
+
+var legend_labels2 = ["Low Disability"," ↓  ", "High Disability "] ;
+
+
+  var legend2 = svg2.selectAll("g.legend")
+  .data([0,7.6,10.8])
+  .enter().append("g")
+  .attr("class", "legend");
+
+  var ls_w = 20, ls_h = 20;
+
+  legend2.append("rect")
+  .attr("x", 0)
+  .attr("y", function(d, i){ return height - (i*ls_h) - 2*ls_h;})
+  .attr("width", ls_w*3)
+  .attr("height", ls_h)
+  .style("fill", function(d, i) { return color2(d); })
+  
+
+  
+  ;
+
+
+  legend2.append("text")
+  .attr("class","lengendtext")
+  .attr("x", 60)
+  .attr("y", function(d, i){ return height - (i*ls_h) - ls_h - 5;})
+  .text(function(d, i){ return legend_labels2[i]; })
+  .style("font-size",10)
+;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+//dis 65
+
+
+//uni dis 18
+
+
+//map view starts here
+    var widthdis65 = $( ".map ").width(),
+     heightdis65= 600;
+    
+//create svg tag in html
+    var svgdis65 = 
+        d3.select( ".mapdis65" )
+          .append( "svg" )
+          .attr( "width", widthdis65 )
+          .attr( "height", heightdis65 );
+
+
+
+
+
+    var projectiondis65 = d3.geo.albers()
+        .center([0, 42])
+        .rotate([99,0])
+        .scale(8000)
+        .translate([widthdis65 / 2, heightdis65/ 2]);
+
+//Creates a new geographic path generator.
+//converts (longitude and latitude) to  (x and y in pixels)
+    var geoPathdis65 = d3.geo.path()
+        .projection(projectiondis65);
+ 
+
+
+ //create quantile classes with color scale
+        var colordis65 = d3.scale.quantile() //designate quantile scale generator
+        .domain([0,29,38.8,72])
+         .range(["#deebf7","#9ecae1","#3182bd"]);
+ 
+ //disability
+      svgdis65.append("g")//g is a html tag, means group,makes SVG visualization more organized
+        .selectAll("path")//path is features (polygons), also a html tag
+        .data(counties.features)//data source
+        .enter()//creating one polygon for every data element in the array.
+        .append("path")//append all polygon to the svg tag in html
+        .attr( "d", geoPathdis65 )//The shape of a path element is defined by one attribute: d.
+        .attr("class","tract")//give path tag a class name to style
+         
+        
+        .style("fill", function(d) {
+              return colordis65(d.properties.dis65); 
+                
+                })
+      
+        .on("mouseover", function(d){
+            //tip.show(d);
+            d3.select(".zoomindetail-dis65").style(
+              "visibility","visible"
+              );
+            d3.select(".zoomindetail1-dis65").text(
+              d.properties.placen 
+              );
+            d3.select(".zoomindetail2-dis65 ").text(
+               
+              d.properties.poverty+' %'
+              );
+            d3.select(".zoomindetail3-dis65 ").text(
+              
+              d.properties.dis65 +' %'
+              );
+             d3.select(".zoomindetail4-dis65 ").text(
+              
+              d.properties.uninsur +' %'
+              );
+
+        })
+       
+           
+     .on("click", clickeddis65)
+          
+
+        ;
+      
+  
+
+ 
+
+
+
+function zoomindis65(d) {
+  var x, y, k;
+
+  if (d && centered !== d) {
+    var centroid = geoPathdis65.centroid(d);
+    x = centroid[0];
+    y = centroid[1];
+    k = 6;
+    centered = d;
+  } else {
+    x = width / 1;
+    y = height /1;
+    k = 6;
+    centered = d;
+  }
+
+
+ svgdis65.transition()
+      .duration(750)
+      .attr("transform", "scale(" + k + ")translate(" + -x/3 + "," + -y/9 + ")")
+     
+      ;
+ 
+}
+
+
+
+function clickeddis65(d) {
+  var x, y, k;
+
+  if (d && centered !== d) {
+    var centroid = geoPathdis65.centroid(d);
+    x = centroid[0];
+    y = centroid[1];
+    k = 4;
+    centered = d;
+  } else {
+    x = width / 1;
+    y = height /1;
+    k = 4;
+    centered = d;
+  }
+
+
+ svgdis65.transition()
+      .duration(750)
+      .attr("transform", "scale(" + k + ")translate(" + -x/3 + "," + -y/9 + ")")
+       
+      ;
+ 
+}
+
+
+function zoomoutdis18(d) {
+ location.reload(); 
+}
+
+ 
+//Adding legend for dis
+
+
+       
+
+
+      
+
+var legend_labelsdis65 = ["Low Disability"," ↓  ", "High Disability "] ;
+
+
+  var legenddis65 = svgdis65.selectAll("g.legend")
+  .data([0,29,38.8])
+  .enter().append("g")
+  .attr("class", "legend");
+
+  var ls_w = 20, ls_h = 20;
+
+  legenddis65.append("rect")
+  .attr("x", 0)
+  .attr("y", function(d, i){ return height - (i*ls_h) - 2*ls_h;})
+  .attr("width", ls_w*3)
+  .attr("height", ls_h)
+  .style("fill", function(d, i) { return colordis65(d); })
+  
+
+  
+  ;
+
+
+  legenddis65.append("text")
+  .attr("class","lengendtext")
+  .attr("x", 60)
+  .attr("y", function(d, i){ return height - (i*ls_h) - ls_h - 5;})
+  .text(function(d, i){ return legend_labels2[i]; })
+  .style("font-size",10)
+;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+//map of poverty
+
+//map view starts here
+    var width3 = $( ".mappoverty").width(),
+     height3 = 600;
+ 
+    
+//create svg tag in html
+    var svg3 = 
+        d3.select( ".mappoverty" )
+          .append( "svg" )
+          .attr( "width", width3 )
+          .attr( "height", height3 );
+
+
+
+
+
+    var projection3 = d3.geo.albers()
+        .center([0, 42])
+        .rotate([99,0])
+        .scale(8000)
+        .translate([width3 / 2, height3 / 2]);
+
+//Creates a new geographic path generator.
+//converts (longitude and latitude) to  (x and y in pixels)
+    var geoPath3 = d3.geo.path()
+        .projection(projection);
+
+
+
+ 
+
+
+//create quantile classes with color scale
+     
+        var color_poverty3 = d3.scale.quantile() //designate quantile scale generator
+        .domain([0,7.7,13,60])
+         .range(["#fee0d2","#fc9272","#de2d26"]);
+
+
+
+ 
+ //disability
+      svg3.append("g")//g is a html tag, means group,makes SVG visualization more organized
+        .selectAll("path")//path is features (polygons), also a html tag
+        .data(counties.features)//data source
+        .enter()//creating one polygon for every data element in the array.
+        .append("path")//append all polygon to the svg tag in html
+        .attr( "d", geoPath3 )//The shape of a path element is defined by one attribute: d.
+        .attr("class","tract")//give path tag a class name to style
+       
+        .style("fill", function(d) {
+              return color_poverty3(d.properties.poverty); 
+                
+                })
+  
+        .on("mouseover", function(d){
+            //tip.show(d);
+            d3.select(".zoomindetail-pov").style(
+              "visibility","visible"
+              );
+            d3.select(".zoomindetail1-pov").text(
+              d.properties.placen 
+              );
+            d3.select(".zoomindetail2-pov").text(
+               
+              d.properties.poverty+' %'
+              );
+           
+
+        })
+       .on("click", clickedpov)
+
+
+        ;
+      
+
+
+ 
+
+
+function zoominpov(d) {
+  var x, y, k;
+
+  if (d && centered !== d) {
+    var centroid = geoPath3.centroid(d);
+    x = centroid[0];
+    y = centroid[1];
+    k = 6;
+    centered = d;
+  } else {
+    x = width / 1;
+    y = height /1;
+    k = 6;
+    centered = d;
+  }
+
+
+ svg3.transition()
+      .duration(750)
+      .attr("transform", "scale(" + k + ")translate(" + -x/3 + "," + -y/9 + ")")
+     
+      ;
+ 
+}
+
+
+function clickedpov(d) {
+  var x, y, k;
+
+  if (d && centered !== d) {
+    var centroid = geoPath.centroid(d);
+    x = centroid[0];
+    y = centroid[1];
+    k = 4;
+    centered = d;
+  } else {
+    x = width / 1;
+    y = height /1;
+    k = 4;
+    centered = d;
+  }
+
+
+ svg3.transition()
+      .duration(750)
+      .attr("transform", "scale(" + k + ")translate(" + -x/3 + "," + -y/9 + ")")
+       
+      ;
+ 
+}
+
+
+function zoomoutpov(d) {
+ location.reload(); 
+}
+
+
+ 
+//Adding legend for poverty
+
+
+
+
+
+  var legend3 = svg3.selectAll("g.legend1")
+  .data([0,7.7,13])
+  .enter().append("g")
+  .attr("class", "legendpoverty");
+ 
+
+  legend3.append("rect")
+  .attr("x", 0)
+  .attr("y", function(d, i){ return height - (i*ls_h) - 2*ls_h;})
+  .attr("width", ls_w)
+  .attr("height", ls_h)
+  .style("fill", "#fee0d2")
+ 
+  ;
+ 
+
+ 
+
+
+  var legend3 = svg3.selectAll("g.legend2")
+  .data([0,7.7,13])
+  .enter().append("g")
+  .attr("class", "legend");
+
+   
+
+  legend3.append("rect")
+  .attr("x", 20)
+  .attr("y", function(d, i){ return height - (i*ls_h) - 2*ls_h;})
+  .attr("width", ls_w)
+  .attr("height", ls_h)
+  .style("fill","#fc9272")
+  
+
+   var legend3 = svg3.selectAll("g.legend3")
+  .data([0,7.7,13])
+  .enter().append("g")
+  .attr("class", "legend");
+
+   
+
+  legend3.append("rect")
+  .attr("x", 40)
+  .attr("y", function(d, i){ return height - (i*ls_h) - 2*ls_h;})
+  .attr("width", ls_w)
+  .attr("height", ls_h)
+  .style("fill","#de2d26")
+ 
+  ;
+
+
+var legend_labels3 = ["","   ", "Low  ←  High Poverty"] ;
+
+
+  legend3.append("text")
+  .attr("class","lengendtext1")
+  .attr("x", 0)
+  .attr("y", function(d, i){ return height - (i*ls_h) - ls_h - 25;})
+  .text(function(d, i){ return legend_labels3[i]; })
+    .style("font-size",10)
+    
+;
+
+
+ 
+
+    
+</script>
+</body>
+</html>
